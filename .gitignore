@@ -5,7 +5,7 @@ xcuserdata
 DerivedData/
 .DS_Store
 .swiftpm
-Packages.resolved
+Package.resolved
 .env
 
 
