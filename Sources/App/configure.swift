@@ -1,5 +1,4 @@
 import Vapor
-import Fluent
 import FluentPostgresDriver
 
 public func configure (_ app: Application) throws {

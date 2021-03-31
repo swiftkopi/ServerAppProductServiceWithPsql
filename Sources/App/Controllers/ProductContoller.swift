@@ -4,7 +4,7 @@ import Fluent
 struct ProductsController: RouteCollection{
     func boot(routes: RoutesBuilder) throws {
         
-        let productsRoutes = routes.grouped("api", "v1", "product")
+        let productsRoutesV1 = routes.grouped("api", "v1", "product")
         
         func createHandler(_ req: Request) throws -> EventLoopFuture<Product>{
             
@@ -67,15 +67,15 @@ struct ProductsController: RouteCollection{
         }
         
         
-        productsRoutes.post(use: createHandler)
-        productsRoutes.put("product_id", use: updateHandler)
-        productsRoutes.delete("product_id", use: deleteHandler)
+        productsRoutesV1.post(use: createHandler)
+        productsRoutesV1.put("product_id", use: updateHandler)
+        productsRoutesV1.delete("product_id", use: deleteHandler)
         
         // Query Routes
-        productsRoutes.get(":product_id", use: readOneHandler)
-        productsRoutes.get(use: readAllHandler)
-        productsRoutes.get("result", use: searchHandler)
-        productsRoutes.get("count", use: countHandler)
+        productsRoutesV1.get(":product_id", use: readOneHandler)
+        productsRoutesV1.get(use: readAllHandler)
+        productsRoutesV1.get("result", use: searchHandler)
+        productsRoutesV1.get("count", use: countHandler)
         
     }
     
