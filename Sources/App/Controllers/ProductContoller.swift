@@ -30,9 +30,16 @@ struct ProductsController: RouteCollection{
                 }
         }
         
-//        func deleteHandler(_ req: Request) throws -> EventLoopFuture<Prodcut> {
-//            
-//        }
+        func deleteHandler(_ req: Request) throws -> EventLoopFuture<HTTPStatus> {
+            
+            Product.find(req.parameters .get("product_id"), on: req.db)
+                .unwrap(or: Abort(.notFound))
+                .flatMap{
+                    product in
+                    product.delete(on: req.db)
+                        .transform(to: .noContent)
+                }
+        }
         
         
         // Query Functions
@@ -45,13 +52,30 @@ struct ProductsController: RouteCollection{
                 .unwrap(or: Abort(.notFound))
         }
         
+        func searchHandler(_ req: Request) throws -> EventLoopFuture<[Product]> {
+        
+        guard let searchQuery = req.query[String.self, at: "search_query"] else { throw Abort(.badRequest)}
+            
+            return Product.query(on: req.db)
+                .filter(\.$name ~~ searchQuery)
+                .all()
+        }
+        
+        func countHandler(_ req: Request) throws -> EventLoopFuture<Int> {
+            
+            Product.query(on: req.db).count()
+        }
+        
         
         productsRoutes.post(use: createHandler)
         productsRoutes.put("product_id", use: updateHandler)
+        productsRoutes.delete("product_id", use: deleteHandler)
         
         // Query Routes
         productsRoutes.get(":product_id", use: readOneHandler)
         productsRoutes.get(use: readAllHandler)
+        productsRoutes.get("result", use: searchHandler)
+        productsRoutes.get("count", use: countHandler)
         
     }
     
