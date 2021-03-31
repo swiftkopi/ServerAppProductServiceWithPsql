@@ -6,6 +6,13 @@ struct ProductsController: RouteCollection{
         
         let productsRoutes = routes.grouped("api", "v1", "product")
         
+        func createHandler(_ req: Request) throws -> EventLoopFuture<Product>{
+            
+            let product = try req.content.decode(Product.self)
+            
+            return product.save(on: req.db).map{ product }
+        }
+        
         func updateHandler(_ req: Request) throws -> EventLoopFuture<Product> {
             
             let updateProduct = try req.content.decode(Product.self)
@@ -23,12 +30,10 @@ struct ProductsController: RouteCollection{
                 }
         }
         
-        func createHandler(_ req: Request) throws -> EventLoopFuture<Product>{
-            
-            let product = try req.content.decode(Product.self)
-            
-            return product.save(on: req.db).map{ product }
-        }
+//        func deleteHandler(_ req: Request) throws -> EventLoopFuture<Prodcut> {
+//            
+//        }
+        
         
         // Query Functions
         func readAllHandler(_ req: Request) throws -> EventLoopFuture<[Product]> {
