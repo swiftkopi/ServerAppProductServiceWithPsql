@@ -6,6 +6,8 @@ struct ProductsController: RouteCollection{
         
         let productsRoutesV1 = routes.grouped("api", "v1", "product")
         
+        let authProductRouteGroup = productsRoutesV1.grouped(UserAuthMiddleware())
+        
         func createHandler(_ req: Request) throws -> EventLoopFuture<Product>{
             
             let product = try req.content.decode(Product.self)
@@ -67,16 +69,21 @@ struct ProductsController: RouteCollection{
         }
         
         
-        productsRoutesV1.post(use: createHandler)
-        productsRoutesV1.put("product_id", use: updateHandler)
-        productsRoutesV1.delete("product_id", use: deleteHandler)
-        
+        authProductRouteGroup.post(use: createHandler)
+        authProductRouteGroup.put("product_id", use: updateHandler)
+        authProductRouteGroup.delete("product_id", use: deleteHandler)
+
         // Query Routes
-        productsRoutesV1.get(":product_id", use: readOneHandler)
-        productsRoutesV1.get(use: readAllHandler)
-        productsRoutesV1.get("result", use: searchHandler)
-        productsRoutesV1.get("count", use: countHandler)
+        authProductRouteGroup.get(":product_id", use: readOneHandler)
+        authProductRouteGroup.get(use: readAllHandler)
+        authProductRouteGroup.get("result", use: searchHandler)
+        authProductRouteGroup.get("count", use: countHandler)
+        
         
     }
     
+    
+    
 }
+
+

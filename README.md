@@ -15,11 +15,11 @@ Read all data:
     
 Read one data by id:
 
-    api/v1/product/${product_id}
+    api/v1/product/{product_id}
 
 Search data by term:
 
-    api/v1/product/result?search_query=${query}
+    api/v1/product/result?search_query={query}
 
 ### POST
 
@@ -28,9 +28,9 @@ Search data by term:
 
 ### PUT
 
-    api/v1/product/${product_id}
+    api/v1/product/{product_id}
     
 
 ### DELETE
 
-    api/v1/product/${product_id}
+    api/v1/product/{product_id}

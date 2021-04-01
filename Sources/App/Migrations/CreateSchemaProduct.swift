@@ -1,6 +1,6 @@
 import Fluent
 
-struct FirstInitProduct: Migration {
+struct CreateSchemaProduct: Migration {
     func prepare(on database: Database) -> EventLoopFuture<Void> {
         database.schema("products")
             .id()
