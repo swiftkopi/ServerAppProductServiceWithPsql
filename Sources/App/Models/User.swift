@@ -12,4 +12,4 @@ struct User: Content {
     }
 }
 
-extension User : Authenticatable {}
+extension User: Authenticatable {}

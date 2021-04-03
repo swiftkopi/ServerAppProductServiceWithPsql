@@ -1,6 +1,12 @@
 import Vapor
 
 final class UserAuthMiddleware: Middleware {
+    let authHostname: String
+    
+    init(authHostname: String) {
+        self.authHostname = authHostname
+    }
+    
     func respond(to request: Request, chainingTo next: Responder) -> EventLoopFuture<Response> {
         
         guard let token = request.headers.bearerAuthorization else {
@@ -9,10 +15,10 @@ final class UserAuthMiddleware: Middleware {
         
         return request
             .client
-            .post("http://localhost:4568/auth/authenticate") {
+            .post("http://\(authHostname):4568/user/auth/authenticate", beforeSend: {
                 authRequest in
                 try authRequest.content.encode(AuthenticateData(token: token.token))
-            }
+            })
         
             .flatMapThrowing { response in
                 guard response.status == .ok else {
@@ -31,8 +37,6 @@ final class UserAuthMiddleware: Middleware {
             .flatMap {
                 return next.respond(to: request)
             }
-        
-       
     }
 }
 
