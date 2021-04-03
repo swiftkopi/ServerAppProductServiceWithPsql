@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-postgresql-on-server",
+    name: "swift-postgresql-product-services",
     platforms: [
         .macOS(.v10_15)
     ],

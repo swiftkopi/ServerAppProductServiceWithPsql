@@ -12,11 +12,11 @@ struct ProductsController: RouteCollection{
         productRouteGroup.get("result", use: searchHandler)
         productRouteGroup.get("count", use: countHandler)
         
-        let authProductRouteGroup = routes.grouped(UserAuthMiddleware(authHostname: "localhost" ))
+        let authProductRouteGroup = productRouteGroup.grouped(UserAuthMiddleware(authHostname: "localhost" ))
         
         authProductRouteGroup.post(use: createHandler)
-        authProductRouteGroup.put("product_id", use: updateHandler)
-        authProductRouteGroup.delete("product_id", use: deleteHandler)
+        authProductRouteGroup.put(":product_id", use: updateHandler)
+        authProductRouteGroup.delete(":product_id", use: deleteHandler)
 
       
     }
