@@ -22,15 +22,13 @@ struct ProductsController: RouteCollection{
     }
     
     func createHandler(_ req: Request) throws -> EventLoopFuture<Product>{
-        
         let product = try req.content.decode(Product.self)
-        
         return product.save(on: req.db).map{ product }
     }
     
     
     func updateHandler(_ req: Request) throws -> EventLoopFuture<Product> {
-        
+    
         let updateProduct = try req.content.decode(Product.self)
         
         return Product.find(req.parameters.get("product_id"), on: req.db)
@@ -71,22 +69,13 @@ struct ProductsController: RouteCollection{
     func searchHandler(_ req: Request) throws -> EventLoopFuture<[Product]> {
     
     guard let searchQuery = req.query[String.self, at: "search_query"] else { throw Abort(.badRequest)}
-        
         return Product.query(on: req.db)
             .filter(\.$name ~~ searchQuery)
             .all()
     }
     
     func countHandler(_ req: Request) throws -> EventLoopFuture<Int> {
-        
         Product.query(on: req.db).count()
-     
-        
     }
     
-    
-    
 }
-
-
-

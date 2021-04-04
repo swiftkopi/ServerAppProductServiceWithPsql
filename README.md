@@ -11,26 +11,26 @@ I called all http method GET is Query, this is all endpoint url I've created:
 
 Read all data:
 
-    api/v1/product
+    /product
     
 Read one data by id:
 
-    api/v1/product/{product_id}
+    /product/{product_id}
 
 Search data by term:
 
-    api/v1/product/result?search_query={query}
+    /product/result?search_query={query}
 
 ### POST
 
-    api/v1/product
+    /product
 
 
 ### PUT
 
-    api/v1/product/{product_id}
+    /product/{product_id}
     
 
 ### DELETE
 
-    api/v1/product/{product_id}
+    /product/{product_id}
