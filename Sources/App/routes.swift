@@ -5,7 +5,7 @@ func routes(_ app: Application) throws {
     
     let port: Int
     
-    if let envPort = Environment.get("PORT_PRODUCT_SERVICE"){
+    if let envPort = Environment.get("PRODUCT_PORT"){
         port = Int(envPort) ?? 8081
     } else {
         port = 8081
@@ -20,7 +20,7 @@ func routes(_ app: Application) throws {
         ),
         as: .psql)
 
-    app.migrations.add(CreateSchemaProduct())
+    app.migrations.add(AddColumnSkuTillToppingId())
     
     app.logger.logLevel = .debug
     
