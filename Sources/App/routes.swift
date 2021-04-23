@@ -13,10 +13,10 @@ func routes(_ app: Application) throws {
 
     app.databases.use(
         .postgres(
-            hostname: Environment.get("HOSTNAME")!,
-            username: Environment.get("USERNAME")!,
-            password: Environment.get("PASSWORD")!,
-            database: Environment.get("DATABASE")!
+            hostname: Environment.get("DB_HOSTNAME")!,
+            username: Environment.get("DB_USERNAME")!,
+            password: Environment.get("DB_PASSWORD")!,
+            database: Environment.get("DB_NAME")!
         ),
         as: .psql)
 
