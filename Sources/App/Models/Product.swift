@@ -21,22 +21,22 @@ static let schema = "products"
     var image_featured: String
     
     @Field(key: "sku")
-    var sku : String
+    var sku : String?
     
     @Field(key: "stock")
-    var stock: Float
+    var stock: Float?
     
     @Field(key: "categories_id")
-    var categories_id : UUID
+    var categories_id : UUID?
     
     @Field(key: "varian_id")
-    var varian_id: UUID
+    var varian_id: UUID?
     
     @Field(key: "topping_id")
-    var topping_id: UUID
+    var topping_id: UUID?
     
     @Field(key: "image_galleries_id")
-    var image_galleries_id: UUID
+    var image_galleries_id: UUID?
     
     
     
