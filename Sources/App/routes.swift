@@ -5,6 +5,10 @@ func routes(_ app: Application) throws {
     
     let port: Int
     
+    guard let serverHostname = Environment.get("PRODUCT_HOSTNAME") else {
+        return print("No Env Server Hostname")
+    }
+    
     if let envPort = Environment.get("PRODUCT_PORT"){
         port = Int(envPort) ?? 8081
     } else {
@@ -23,6 +27,7 @@ func routes(_ app: Application) throws {
     app.migrations.add(AddColumnSkuTillToppingId())
     
     app.logger.logLevel = .debug
+    app.http.server.configuration.hostname = serverHostname
     
     app.http.server.configuration.port = port
     
