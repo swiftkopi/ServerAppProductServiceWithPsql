@@ -60,3 +60,12 @@ static let schema = "products"
 
 extension Product: Content{}
 
+
+final class UpdateCategoryID: Content, Codable {
+    var categories_id: UUID
+    
+    init(categories_id: UUID){
+        self.categories_id = categories_id
+    }
+}
+

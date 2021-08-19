@@ -12,10 +12,16 @@ final class UserAuthMiddleware: Middleware {
             return request.eventLoop.future(error: Abort(.unauthorized))
         }
         
+        //debug
+        print("\n", "TOKEN", token, "\n")
+        
         return request
             .client
-            .post("http://\(authHostname):\(authPort)/user/auth/authenticate", beforeSend: {
-                authRequest in
+            .post("http://\(authHostname):\(authPort)/user/3/auth/authenticate", beforeSend: { authRequest in
+                
+                //debug
+                print("\n","AUTH_REQUEST",authRequest,"\n")
+                
                 try authRequest.content.encode(AuthenticateData(token: token.token))
             })
         
@@ -30,6 +36,10 @@ final class UserAuthMiddleware: Middleware {
                 
                 let user = try response.content.decode(User.self)
                 
+                //debug
+                print("\n","RESPONSE:\n", response,"\n")
+                print("\n","USER:", user,"\n")
+              
                 request.auth.login(user)
             }
             

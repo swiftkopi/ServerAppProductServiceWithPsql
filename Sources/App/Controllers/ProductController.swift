@@ -11,6 +11,8 @@ struct ProductsController: RouteCollection{
         productRouteGroup.get(use: readAllHandler)
         productRouteGroup.get("result", use: searchHandler)
         productRouteGroup.get("count", use: countHandler)
+        productRouteGroup.put(":product_id", "category", use: updateCategoriesID)
+        productRouteGroup.get("category", ":category_id", use: searchByCategoryID)
         
         let authProductRouteGroup = productRouteGroup.grouped(UserAuthMiddleware())
         
@@ -44,6 +46,18 @@ struct ProductsController: RouteCollection{
             }
     }
     
+    func updateCategoriesID(_ req: Request) throws -> EventLoopFuture<Product> {
+        let updateProduct = try req.content.decode(UpdateCategoryID.self)
+        
+        return Product.find(req.parameters.get("product_id"), on: req.db)
+            .unwrap(or: Abort(.notFound))
+            .flatMap{
+                product in
+                product.categories_id = updateProduct.categories_id
+                return product.save(on: req.db).map{product}
+            }
+    }
+    
     func deleteHandler(_ req: Request) throws -> EventLoopFuture<HTTPStatus> {
         
         Product.find(req.parameters .get("product_id"), on: req.db)
@@ -64,6 +78,15 @@ struct ProductsController: RouteCollection{
     func readOneHandler(_ req: Request) throws -> EventLoopFuture<Product> {
         Product.find(req.parameters.get("product_id"), on: req.db)
             .unwrap(or: Abort(.notFound))
+    }
+    
+    func searchByCategoryID(_ req: Request) throws -> EventLoopFuture<[Product]> {
+        let category_id = req.parameters.get("category_id", as: UUID.self)
+        
+        return Product
+            .query(on: req.db)
+            .filter(\.$categories_id == category_id)
+            .all()
     }
     
     func searchHandler(_ req: Request) throws -> EventLoopFuture<[Product]> {

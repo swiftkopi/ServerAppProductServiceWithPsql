@@ -10,9 +10,6 @@ struct AddColumnSkuTillToppingId: Migration {
             .field("topping_id", .uuid )
             .field("image_galleries_id", .uuid)
             .unique(on: "sku")
-            .unique(on: "categories_id")
-            .unique(on: "varian_id")
-            .unique(on: "topping_id")
             .unique(on: "image_galleries_id")
             .update()
     }
