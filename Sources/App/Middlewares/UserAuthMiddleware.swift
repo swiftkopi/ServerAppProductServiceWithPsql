@@ -17,7 +17,7 @@ final class UserAuthMiddleware: Middleware {
         
         return request
             .client
-            .post("http://\(authHostname):\(authPort)/user/3/auth/authenticate", beforeSend: { authRequest in
+            .post("http://\(authHostname):\(authPort)/user/auth/authenticate", beforeSend: { authRequest in
                 
                 //debug
                 print("\n","AUTH_REQUEST",authRequest,"\n")

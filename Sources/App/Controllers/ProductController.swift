@@ -20,8 +20,8 @@ struct ProductsController: RouteCollection{
         authProductRouteGroup.put(":product_id", use: updateHandler)
         authProductRouteGroup.delete(":product_id", use: deleteHandler)
 
-      
     }
+    
     
     func createHandler(_ req: Request) throws -> EventLoopFuture<Product>{
         let product = try req.content.decode(Product.self)
@@ -46,6 +46,7 @@ struct ProductsController: RouteCollection{
             }
     }
     
+    
     func updateCategoriesID(_ req: Request) throws -> EventLoopFuture<Product> {
         let updateProduct = try req.content.decode(UpdateCategoryID.self)
         
@@ -57,6 +58,7 @@ struct ProductsController: RouteCollection{
                 return product.save(on: req.db).map{product}
             }
     }
+    
     
     func deleteHandler(_ req: Request) throws -> EventLoopFuture<HTTPStatus> {
         
@@ -75,10 +77,12 @@ struct ProductsController: RouteCollection{
         Product.query(on: req.db).sort(\.$name, .ascending).all()
     }
     
+    
     func readOneHandler(_ req: Request) throws -> EventLoopFuture<Product> {
         Product.find(req.parameters.get("product_id"), on: req.db)
             .unwrap(or: Abort(.notFound))
     }
+    
     
     func searchByCategoryID(_ req: Request) throws -> EventLoopFuture<[Product]> {
         let category_id = req.parameters.get("category_id", as: UUID.self)
@@ -89,6 +93,7 @@ struct ProductsController: RouteCollection{
             .all()
     }
     
+    
     func searchHandler(_ req: Request) throws -> EventLoopFuture<[Product]> {
     
     guard let searchQuery = req.query[String.self, at: "search_query"] else { throw Abort(.badRequest)}
@@ -96,6 +101,7 @@ struct ProductsController: RouteCollection{
             .filter(\.$name ~~ searchQuery)
             .all()
     }
+    
     
     func countHandler(_ req: Request) throws -> EventLoopFuture<Int> {
         Product.query(on: req.db).count()
